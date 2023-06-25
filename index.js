@@ -37,13 +37,13 @@ async function run() {
       });
       const users = await cursor.toArray();
 
-      const user = {
-        email: users[0].email,
-        username: users[0].username,
-        _id: users[0].id,
-      };
-
       if (users[0]) {
+        const user = {
+          email: users[0].email,
+          username: users[0].username,
+          _id: users[0].id,
+        };
+        console.log(user);
         const token = jwt.sign(user, process.env.access_token_secret, {
           expiresIn: "1h",
         });
@@ -114,6 +114,12 @@ async function run() {
           }
         }
       }
+    });
+
+    app.get("/user", (req, res) => {
+      const { token } = req.headers;
+
+      res.send(jwt.decode(token));
     });
   } finally {
   }
