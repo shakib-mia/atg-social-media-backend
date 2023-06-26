@@ -200,13 +200,36 @@ async function run() {
       const cursor = await postsCollection.insertOne(data);
 
       res.send(cursor);
-      // console.log(data);
+    });
+
+    app.delete("/posts/:_id", async (req, res) => {
+      const { _id } = req.params;
+
+      const cursor = await postsCollection.deleteOne({
+        _id: new ObjectId(_id),
+      });
+
+      res.send(cursor);
+    });
+
+    app.put("/posts/:_id", async (req, res) => {
+      const { _id } = req.params;
+      // console.log(_id);
+      console.log(req.body);
+      const query = { _id: new ObjectId(_id) };
+      const updatedDoc = {
+        $set: { postBody: req.body.postBody },
+      };
+      const option = {
+        upsert: true,
+      };
+      const cursor = await postsCollection.updateOne(query, updatedDoc, option);
+      res.send(cursor);
     });
 
     app.put("/like", async (req, res) => {
       const { _id, token, likedBy } = req.body;
       const user = jwt.verify(token, process.env.access_token_secret);
-      // console.log(_id);
       const newLikes = [...likedBy, user.username];
       const updatedDoc = {
         $set: {
@@ -214,9 +237,9 @@ async function run() {
         },
       };
       // console.log({ _id });
-      const query = { _id };
+      const query = { _id: new ObjectId(_id) };
 
-      const cursor = await postsCollection.updateOne({ _id }, updatedDoc);
+      const cursor = await postsCollection.updateOne(query, updatedDoc);
       res.send(cursor);
     });
 
