@@ -2,7 +2,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 5000;
-// const cors = require("cors");
+const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
@@ -18,7 +18,7 @@ var transporter = nodemailer.createTransport({
 require("dotenv").config();
 
 const uri = `mongodb+srv://smdshakibmia2001:${process.env.db_pass}@cluster0.e6t4faf.mongodb.net/?retryWrites=true&w=majority`;
-
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
