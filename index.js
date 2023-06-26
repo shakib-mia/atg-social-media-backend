@@ -58,7 +58,7 @@ async function run() {
           username: users[0].username,
           _id: users[0].id,
         };
-        console.log(user);
+
         const token = jwt.sign(user, process.env.access_token_secret, {
           expiresIn: "1d",
         });
@@ -95,7 +95,6 @@ async function run() {
         }
 
         if (usernameData[0] && emailData[0]) {
-          //   console.log(usernameData);
           res.send({
             type: "error",
             message: "email & username already in use",
@@ -103,13 +102,10 @@ async function run() {
         }
 
         if (emailData[0] && !usernameData[0]) {
-          //   console.log(emailData);
           res.send({ type: "error", message: "Email Already in use" });
         }
 
         if (!usernameData[0] && !emailData[0]) {
-          //   res.send({ message: "both are available" });
-
           const usersCursor = await usersCollection.insertOne({
             email,
             username,
@@ -155,10 +151,7 @@ async function run() {
 
         transporter.sendMail(mailOptions, function (error, info) {
           if (error) {
-            console.log(error);
           } else {
-            // console.log("Email sent: " + info.response);
-            // res.status(200);
             res.send({ message: info });
           }
         });
@@ -181,7 +174,7 @@ async function run() {
           upsert: true,
         }
       );
-      // const user = await
+
       res.send(cursor);
     });
 
@@ -214,8 +207,7 @@ async function run() {
 
     app.put("/posts/:_id", async (req, res) => {
       const { _id } = req.params;
-      // console.log(_id);
-      console.log(req.body);
+
       const query = { _id: new ObjectId(_id) };
       const updatedDoc = {
         $set: { postBody: req.body.postBody },
@@ -236,7 +228,7 @@ async function run() {
           likedBy: newLikes,
         },
       };
-      // console.log({ _id });
+
       const query = { _id: new ObjectId(_id) };
 
       const cursor = await postsCollection.updateOne(query, updatedDoc);
