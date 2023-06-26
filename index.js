@@ -139,7 +139,7 @@ async function run() {
       const cursor = await usersCollection.find({ email });
       const user = await cursor.toArray();
 
-      const link = `http://localhost:3000/reset-password/${email}`;
+      const link = `https://atg-social-media-shakib.netlify.app/reset-password/${email}`;
 
       if (user[0]) {
         var mailOptions = {
