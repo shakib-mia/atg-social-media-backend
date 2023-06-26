@@ -21,6 +21,8 @@ const uri = `mongodb+srv://smdshakibmia2001:${process.env.db_pass}@cluster0.e6t4
 app.use(
   cors({
     origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(express.json());
@@ -134,7 +136,7 @@ async function run() {
     app.get("/user", (req, res) => {
       const { token } = req.headers;
 
-      res.send("jwt.decode(token)");
+      res.send(jwt.decode(token));
     });
 
     app.post("/reset-password", async (req, res) => {
