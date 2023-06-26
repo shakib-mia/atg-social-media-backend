@@ -197,7 +197,10 @@ async function run() {
     app.post("/posts", async (req, res) => {
       const data = req.body;
 
-      console.log(data);
+      const cursor = await postsCollection.insertOne(data);
+
+      res.send(cursor);
+      // console.log(data);
     });
 
     app.put("/like", async (req, res) => {
@@ -211,18 +214,23 @@ async function run() {
         },
       };
       // console.log({ _id });
-      const query = { _id: new ObjectId(_id) };
+      const query = { _id };
 
-      const cursor = await postsCollection.updateOne(query, updatedDoc);
+      const cursor = await postsCollection.updateOne({ _id }, updatedDoc);
       res.send(cursor);
     });
 
     app.put("/comments", async (req, res) => {
-      const { _id, token, comment } = req.body;
-      // const comments = {commentedBy, comment}
-      const user = jwt.verify(token, process.env.access_token_secret);
+      const { _id, commentedBy, comment } = req.body;
+      const query = { _id: new ObjectId(_id) };
 
-      console.log(user);
+      const updatedDoc = {
+        $set: {
+          comments: comment,
+        },
+      };
+      const cursor = await postsCollection.updateOne(query, updatedDoc);
+      res.send(cursor);
     });
   } finally {
   }
