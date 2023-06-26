@@ -23,7 +23,6 @@ app.use(
     origin: "*",
   })
 );
-app.options("*", cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
@@ -135,7 +134,7 @@ async function run() {
     app.get("/user", (req, res) => {
       const { token } = req.headers;
 
-      res.send(jwt.decode(token));
+      res.send("jwt.decode(token)");
     });
 
     app.post("/reset-password", async (req, res) => {
