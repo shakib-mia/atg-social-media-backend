@@ -18,7 +18,12 @@ var transporter = nodemailer.createTransport({
 require("dotenv").config();
 
 const uri = `mongodb+srv://smdshakibmia2001:${process.env.db_pass}@cluster0.e6t4faf.mongodb.net/?retryWrites=true&w=majority`;
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+  })
+);
 app.use(express.json());
 app.use(bodyParser.json());
 
